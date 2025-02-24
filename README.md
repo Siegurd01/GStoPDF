@@ -11,6 +11,7 @@ Functionality:
   * Two text files:
     * A reference list with links to the sources from which the articles were downloaded.
     * A list of articles that could not be downloaded, allowing for manual retrieval.
+* Automaticly opens folder with search results
 
 # Batch Downloading Process:
 Depending on the number of search pages specified, the script automates bulk downloading. For example, if set to 10 pages, it should retrieve up to 100 articles, organizing them neatly into a folder named after the search query, with an almost-ready bibliography inside.
