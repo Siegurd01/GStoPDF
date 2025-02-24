@@ -131,7 +131,7 @@ def main():
 
     BASE_URL = 'https://scholar.google.com/scholar'
     all_results = []
-
+    os.startfile(os.path.realpath(folder_path)) # open final folder with search results
     for page_num in range(num_pages):
         print(f"Processing page {page_num + 1}/{num_pages}")
         params = {
