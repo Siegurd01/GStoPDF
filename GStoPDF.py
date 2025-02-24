@@ -6,6 +6,15 @@ import os
 import re
 import subprocess
 
+def is_valid_pdf(filepath):
+    """Check if the file starts with the '%PDF-' signature."""
+    try:
+        with open(filepath, "rb") as file:
+            header = file.read(5)  # Read the first 5 bytes
+        return header == b"%PDF-"  # Check if it's a valid PDF signature
+    except:
+        return False  # If any error occurs, assume it's not a valid PDF
+
 def sanitize_filename(filename):
     """Sanitize filenames by removing invalid characters and unwanted text like [PDF]."""
     filename = re.sub(r'\[PDF\]+', '', filename)  # Remove [PDF], [PDF][PDF], etc.
@@ -26,6 +35,13 @@ def download_pdf(pdf_url, title, authors, folder, literature_file, error_file):
     filename = sanitize_filename(f"{title} - {authors}") + ".pdf"
     filepath = os.path.join(folder, filename)
     
+    # Check if the file is already recorded in literature.txt
+    if os.path.exists(literature_file):
+        with open(literature_file, "r", encoding="utf-8") as lf:
+            if any(filename in line for line in lf):
+                print(f"Skipping: {filename} (Already recorded)")
+                return True  # Skip download
+                
     os.makedirs(folder, exist_ok=True)  # Ensure the folder exists
 
     try:
@@ -35,7 +51,16 @@ def download_pdf(pdf_url, title, authors, folder, literature_file, error_file):
                 for chunk in response.iter_content(1024):
                     file.write(chunk)
             print(f"Downloaded: {filename}")
+            
+            # Verify the file signature is a real PDF
+            if not is_valid_pdf(filepath):
+                print(f"Invalid PDF detected: {filename}, deleting...")
+                os.remove(filepath)
+                raise Exception("Corrupt or non-PDF file detected")
 
+            
+            # Remove from error log if it exists
+            remove_from_error_log(title, authors, error_file)
             # Log success in literature.txt
             with open(literature_file, "a", encoding="utf-8") as lf:
                 lf.write(f"{filename} | {pdf_url}\n")
@@ -50,7 +75,14 @@ def download_with_scidownl(title, authors, folder, literature_file, error_file):
     """Try downloading the paper with SciDownl if no direct PDF link is available."""
     filename = sanitize_filename(f"{title} - {authors}") + ".pdf"
     filepath = os.path.join(folder, filename)
-    
+    # Remove from error log if it exists
+    remove_from_error_log(title, authors, error_file)
+    # Check if the file is already recorded in literature.txt
+    if os.path.exists(literature_file):
+        with open(literature_file, "r", encoding="utf-8") as lf:
+            if any(filename in line for line in lf):
+                print(f"Skipping: {filename} (Already recorded)")
+                return True  # Skip download
     try:
         print(f"Trying to download '{title}' with SciDownl...")
         result = subprocess.run(
@@ -58,20 +90,38 @@ def download_with_scidownl(title, authors, folder, literature_file, error_file):
             capture_output=True,
             text=True
         )
-
+        # Verify the file signature is a real PDF
+        if not is_valid_pdf(filepath):
+            print(f"Invalid PDF detected: {filename}, deleting...")
+            os.remove(filepath)
+            raise Exception("Corrupt or non-PDF file detected")
+                
         if result.returncode == 0 and os.path.exists(filepath):
             print(f"SciDownl download successful: {filepath}")
             with open(literature_file, "a", encoding="utf-8") as lf:
                 lf.write(f"{filename} | SciDownl\n")
+            
         else:
             print(f"SciDownl failed for: {title}")
             with open(error_file, "a", encoding="utf-8") as ef:
                 ef.write(f"{title} | {authors} | SciDownl failed\n")
     except Exception as e:
-        print(f"Error running SciDownl: {e}")
+        print(f"SciDownl failed for: {title}")
         with open(error_file, "a", encoding="utf-8") as ef:
-            ef.write(f"{title} | {authors} | SciDownl error: {e}\n")
+            ef.write(f"{title} | {authors} | SciDownl failed\n")
 
+def remove_from_error_log(title, authors, error_file):
+    """Remove an entry from the error log if the file is successfully downloaded."""
+    #print("Remove an entry from the error log if the file is successfully downloaded")
+    #print(filename)
+    if os.path.exists(error_file):
+        with open(error_file, "r", encoding="utf-8") as ef:
+            lines = ef.readlines()
+        with open(error_file, "w", encoding="utf-8") as ef:
+            for line in lines:
+                if title not in line or authors not in line:
+                    ef.write(line)
+                    
 def parse_results(html):
     """Parse Google Scholar HTML results for titles, authors, and PDF links."""
     soup = BeautifulSoup(html, "html.parser")
@@ -118,9 +168,12 @@ def main():
     literature_file = os.path.join(folder_path, "literature.txt")
     error_file = os.path.join(folder_path, "literature_errors.txt")
 
-    # Clear or create literature files before starting
-    open(literature_file, "w", encoding="utf-8").close()
-    open(error_file, "w", encoding="utf-8").close()
+    # Create files if they don't exist
+    if not os.path.exists(literature_file):
+        open(literature_file, "w", encoding="utf-8").close()
+
+    if not os.path.exists(error_file):
+        open(error_file, "w", encoding="utf-8").close()
 
     session = requests.Session()
     session.headers.update({
@@ -149,8 +202,8 @@ def main():
 
         page_results = parse_results(response.text)
         all_results.extend(page_results)
-
-    print() # Add some space between Processing pages and files
+    
+    print("") # Add some space between Processing pages and files
     # Process results
     fileno = 0
     for item in all_results:
@@ -169,6 +222,6 @@ def main():
             download_with_scidownl(item["title"], item["authors"], folder_path, literature_file, error_file)
         
         print("-" * 70)
-
+    
 if __name__ == "__main__":
     main()
