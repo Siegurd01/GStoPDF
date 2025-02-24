@@ -79,7 +79,7 @@ Enter number of pages to search: 5
   ```
 ![image](https://github.com/user-attachments/assets/f3ae80d7-e2ea-464f-8534-87c3666b3b81)
 
-  A separate folder will be created for each search query.
+  A separate folder will be created for each unique search query.
   
 Literature list:
 ![image](https://github.com/user-attachments/assets/4b32894a-5c87-4683-95b1-5568847590d6)
