@@ -1,5 +1,6 @@
 # GStoPDF
 Batch Search and Download Script for Scientific Articles from Google Scholar
+![image](https://github.com/user-attachments/assets/5ef3eeb9-12d1-49e0-bd5c-89ca2419c6db)
 
 Functionality:
 * Performs keyword-based searches on Google Scholar, allowing users to specify the number of pages to search (as Google Scholar displays only 10 articles per page).
@@ -50,11 +51,11 @@ Ensure that Python 3 is installed on your system. If not, download and install i
 
 ## Step 5: Place the Script and Run It
 
-  Move the script getPDF_from_GS_scihub.py into the Google_Scholar_PDF_Downloader_venv folder.
+  Move the script GStoPDF.py into the Google_Scholar_PDF_Downloader_venv folder.
   Navigate to the folder and run the script:
   ```
   cd C:\Google_Scholar_PDF_Downloader_venv
-  python getPDF_from_GS_scihub.py
+  python GStoPDF.py
   ```
 ## Step 6: Provide Search Parameters
 
@@ -67,7 +68,7 @@ Example input:
 Enter search query: machine learning
 Enter number of pages to search: 5
 ```
-![image](https://github.com/user-attachments/assets/c66011b9-a3f7-4747-ab6c-3f7be6dcadbd)
+![image](https://github.com/user-attachments/assets/006684a7-9717-4559-9670-c1d0877296b1)
 
 ## Step 7: Locate Downloaded Files
 
