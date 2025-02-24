@@ -1,5 +1,5 @@
 # GStoPDF
-Batch Search and Download Script for Scientific Articles from Google Scholar
+Batch Search and Download Script for Scientific Articles from Google Scholar and Sci-Hub
 ![image](https://github.com/user-attachments/assets/5ef3eeb9-12d1-49e0-bd5c-89ca2419c6db)
 
 Functionality:
