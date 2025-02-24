@@ -150,6 +150,7 @@ def main():
         page_results = parse_results(response.text)
         all_results.extend(page_results)
 
+    print() # Add some space between Processing pages and files
     # Process results
     fileno = 0
     for item in all_results:
