@@ -13,6 +13,7 @@ Functionality:
 
 # Batch Downloading Process:
 Depending on the number of search pages specified, the script automates bulk downloading. For example, if set to 10 pages, it should retrieve up to 100 articles, organizing them neatly into a folder named after the search query, with an almost-ready bibliography inside.
+![image](https://github.com/user-attachments/assets/6b7526f5-75b9-4c2b-87f1-2fdf17cebf19)
 
 This tool would have been incredibly useful during my PhD years! 🚀
 
