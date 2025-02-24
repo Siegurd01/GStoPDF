@@ -211,7 +211,7 @@ def main():
         print(f"Processing file {fileno}/{num_pages*10}")
         print("\nTitle:", item["title"])
         print("Authors:", item["authors"])
-
+        
         if item["pdf_link"]:
             print("PDF Link:", item["pdf_link"])
             success = download_pdf(item["pdf_link"], item["title"], item["authors"], folder_path, literature_file, error_file)
@@ -222,6 +222,7 @@ def main():
             download_with_scidownl(item["title"], item["authors"], folder_path, literature_file, error_file)
         
         print("-" * 70)
-    
+        time.sleep(random.uniform(1, 3))  # Random delay to avoid blocking
+        
 if __name__ == "__main__":
     main()
