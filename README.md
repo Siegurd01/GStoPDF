@@ -12,6 +12,7 @@ Functionality:
     * A reference list with links to the sources from which the articles were downloaded.
     * A list of articles that could not be downloaded, allowing for manual retrieval.
 * Automaticly opens folder with search results
+* Synchronizes files and a reference list in the same folder under new search conditions (expanding the number of pages for analysis, using VPN to access blocked sites). Thus, only new files will be downloaded and added to reference list. If, under new conditions, it was possible to download the file that was previously not available - it is deleted from list of articles that could not be downloaded.
 
 # Batch Downloading Process:
 Depending on the number of search pages specified, the script automates bulk downloading. For example, if set to 10 pages, it should retrieve up to 100 articles, organizing them neatly into a folder named after the search query, with an almost-ready bibliography inside.
@@ -81,7 +82,7 @@ Enter number of pages to search: 5
 
   A separate folder will be created for each unique search query.
   
-Literature list:
+Reference list and download error file list:
 ![image](https://github.com/user-attachments/assets/4b32894a-5c87-4683-95b1-5568847590d6)
 
 
