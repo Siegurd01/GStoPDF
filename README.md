@@ -9,10 +9,10 @@ Functionality:
 * For each search query, a dedicated folder is created, containing:
   * All downloaded PDF files, named in a structured format (article title, author name, journal, and year).
   * Two text files:
-    * A reference list with links to the sources from which the articles were downloaded.
-    * A list of articles that could not be downloaded, allowing for manual retrieval.
+    * A reference list with links to the sources from which the articles were downloaded (literature.txt).
+    * A list of articles that could not be downloaded, allowing for manual retrieval (literature_errors.txt).
 * Automaticly opens folder with search results
-* Synchronizes files and a reference list in the same folder under new search conditions (expanding the number of pages for analysis, using VPN to access blocked sites). Thus, only new files will be downloaded and added to reference list. If, under new conditions, it was possible to download the file that was previously not available - it is deleted from list of articles that could not be downloaded.
+* Synchronizes files and a reference list in the same folder under new search conditions (expanding the number of pages for analysis, using VPN to access blocked sites). Thus, only new files will be downloaded and added to reference list. If, under new conditions, it was possible to download previously inaccessible file - it will be deleted from literature_errors.txt list.
 
 # Batch Downloading Process:
 Depending on the number of search pages specified, the script automates bulk downloading. For example, if set to 10 pages, it should retrieve up to 100 articles, organizing them neatly into a folder named after the search query, with an almost-ready bibliography inside.
