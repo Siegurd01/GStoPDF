@@ -41,7 +41,7 @@ def download_pdf(pdf_url, title, authors, folder, literature_file, error_file):
             if any(filename in line for line in lf):
                 print(f"Skipping: {filename} (Already recorded)")
                 return True  # Skip download
-                
+    time.sleep(random.uniform(1, 3))  # Random delay to avoid blocking            
     os.makedirs(folder, exist_ok=True)  # Ensure the folder exists
 
     try:
@@ -83,6 +83,7 @@ def download_with_scidownl(title, authors, folder, literature_file, error_file):
             if any(filename in line for line in lf):
                 print(f"Skipping: {filename} (Already recorded)")
                 return True  # Skip download
+    time.sleep(random.uniform(1, 3))  # Random delay to avoid blocking
     try:
         print(f"Trying to download '{title}' with SciDownl...")
         result = subprocess.run(
@@ -222,7 +223,7 @@ def main():
             download_with_scidownl(item["title"], item["authors"], folder_path, literature_file, error_file)
         
         print("-" * 70)
-        time.sleep(random.uniform(1, 3))  # Random delay to avoid blocking
+        
         
 if __name__ == "__main__":
     main()
